@@ -1,0 +1,18 @@
+{{test}}
+
+<form method="post">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<input type="submit" vаluе="Записать"/>
+</form>
+
+
+{% for product in products %}
+<p>
+    <div>{{ product.artno }}</div>
+    <div>{{ product.name }}</div>
+    <div>{{ product.price }}</div>
+    <div><a href="/product/{{ product.id }}/" >Просмотр</a></div>
+
+</p>
+{% endfor%} 

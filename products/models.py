@@ -19,7 +19,7 @@ class Currency(models.Model):
 
 class Brand(models.Model):
     brand_name = models.CharField(
-        max_length=30, db_index=True, verbose_name='Бренд')
+        max_length=30, db_index=True, unique=True, verbose_name='Бренд')
     img_url = models.URLField(max_length=200, null=True, blank=True,)
 
     def __str__(self):
@@ -46,7 +46,7 @@ class Vendor(models.Model):
 
 class Сategory(models.Model):
     category_name = models.CharField(
-        max_length=90, db_index=True, verbose_name='Группы товара')
+        max_length=90, db_index=True, unique=True, verbose_name='Группы товара')
 
     def __str__(self):
         return self.category_name
@@ -55,6 +55,24 @@ class Сategory(models.Model):
         verbose_name_plural = 'Группы товара'
         verbose_name = 'Группа товара'
         ordering = ['category_name']
+
+
+class SubСategory(models.Model):
+    sub_category_name = models.CharField(
+        max_length=90, db_index=True, default='',
+        null=True, blank=True, unique=True,
+        verbose_name='Подгруппы товара')
+    category = models.ForeignKey(
+        'Сategory', on_delete=models.CASCADE, default=719,
+        verbose_name='Группы товара')
+
+    def __str__(self):
+        return self.sub_category_name
+
+    class Meta:
+        verbose_name_plural = 'Подгруппы товара'
+        verbose_name = 'Подгруппа товара'
+        ordering = ['sub_category_name']
 
 
 class Unit(models.Model):
@@ -106,11 +124,12 @@ class Products(models.Model):
     vendor = models.ForeignKey(
         'Vendor', on_delete=models.PROTECT, verbose_name='Производитель')
     country_of_origin = models.ForeignKey(
-        'Сountry', on_delete=models.PROTECT, verbose_name='Страна производства')
+        'Сountry', on_delete=models.PROTECT,
+        verbose_name='Страна производства')
     unit = models.ForeignKey(
         'Unit', on_delete=models.PROTECT, verbose_name='Единица измерения')
-    category = models.ForeignKey(
-        'Сategory', on_delete=models.PROTECT, verbose_name='Группы товара')
+    sub_category = models.ForeignKey(
+        'SubСategory', on_delete=models.PROTECT, verbose_name='Группы товара')
 
     def __str__(self):
         return self.name
@@ -155,7 +174,7 @@ class Orders(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     status = models.SmallIntegerField(choices=(
-        (1, 'Новый'), (2, 'В работе'), (3, 'Отменен'), (4, 'Завершен')), 
+        (1, 'Новый'), (2, 'В работе'), (3, 'Отменен'), (4, 'Завершен')),
         default=1)
     delivery = models.SmallIntegerField(
         choices=((1, 'Самовывоз'), (2, 'Доставка'),), default=1)

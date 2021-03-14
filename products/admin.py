@@ -3,6 +3,7 @@ from products.models import Currency
 from products.models import Brand
 from products.models import Vendor
 from products.models import Сategory
+from products.models import SubСategory
 from products.models import Unit
 from products.models import Сountry
 from products.models import Products
@@ -36,6 +37,12 @@ class СategoryAdmin(admin.ModelAdmin):
     search_fields = ('category_name',)
 
 
+class SubСategoryAdmin(admin.ModelAdmin):
+    list_display = ('sub_category_name', 'category')
+    list_display_link = ('sub_category_name', 'category')
+    search_fields = ('sub_category_name',)
+
+
 class UnitAdmin(admin.ModelAdmin):
     list_display = ('unit_name',)
     list_display_link = ('unit_name',)
@@ -63,7 +70,7 @@ class ProductsAdmin(admin.ModelAdmin):
         'vendor',
         'country_of_origin',
         'unit',
-        'category',)
+        'sub_category',)
     list_display_link = (
         'artno',
         'name',
@@ -78,7 +85,7 @@ class ProductsAdmin(admin.ModelAdmin):
         'vendor',
         'country_of_origin',
         'unit',
-        'category',)
+        'sub_category',)
     search_fields = ('artno', 'name',)
 
 
@@ -112,12 +119,6 @@ class OrdersAdmin(admin.ModelAdmin):
     search_fields = ('date',)
 
 
-class PropertiesProductsAdmin(admin.ModelAdmin):
-    list_display = ('product', 'properties', 'properties_value')
-    list_display_link = ('product', 'properties', 'properties_value')
-    search_fields = ('product', 'properties', 'properties_value')
-
-
 class OrderDetailsAdmin(admin.ModelAdmin):
     list_display = ('order', 'product', 'amount')
     list_display_link = ('order', 'product', 'amount')
@@ -134,3 +135,4 @@ admin.site.register(Properties, PropertiesAdmin)
 admin.site.register(PropertiesProducts, PropertiesProductsAdmin)
 admin.site.register(Orders, OrdersAdmin)
 admin.site.register(OrderDetails, OrderDetailsAdmin)
+admin.site.register(SubСategory, SubСategoryAdmin)
