@@ -13,10 +13,12 @@ from products.models import Orders
 from products.models import OrderDetails
 from products.forms import ProductSearch
 from products.forms import Add2Order
+from django.db.models import Q
 
 
 def index(request):
     info = ''
+
     return render(request, 'test.html', {'test': info})
 
 
@@ -37,24 +39,24 @@ def catalog(request):
             else:
                 price_max = 999999999
             brand = form.cleaned_data.get("brand")
-            if brand:                
+            if brand:
                 pass
             else:
                 brand = Brand.objects.all()
-                info='не зашел'           
             vendor = form.cleaned_data.get("vendor")
             if vendor:
                 pass
             else:
                 vendor = Vendor.objects.all()
 
-            #info = brand
         products = Products.objects.all().filter(
-            name__icontains=product).filter(
-            description__icontains=product).filter(
+            Q(name__icontains=product) or
+            Q(description__icontains=product) or
+            Q(artno__icontains=product)).filter(
             price__gte=price_min).filter(
             price__lte=price_max).filter(
-            brand__in=brand).filter(vendor__in=vendor)
+            brand__in=brand).filter(
+            vendor__in=vendor)
     else:
         form = ProductSearch()
         products = Products.objects.all()
@@ -64,4 +66,9 @@ def catalog(request):
 def product(request, idprotucts: int):
     form = Add2Order()
     product = Products.objects.get(id=idprotucts)
-    return render(request, 'cardproduct.html', {'form': form, 'product': product})
+    propertiesproducts = PropertiesProducts.objects.filter(product__id=idprotucts)
+    return render(request, 'cardproduct.html', {
+        'form': form,
+        'product': product,
+        'properties': propertiesproducts
+        })

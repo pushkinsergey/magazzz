@@ -157,7 +157,7 @@ class Properties(models.Model):
 
 class PropertiesProducts(models.Model):
     product = models.ForeignKey(
-        'Products', on_delete=models.CASCADE, verbose_name='Товар')
+        'Products', on_delete=models.CASCADE, related_name='properties', verbose_name='Товар')
     properties = models.ForeignKey(
         'Properties', on_delete=models.CASCADE, verbose_name='Характеристика')
     properties_value = models.CharField(

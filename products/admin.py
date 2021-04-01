@@ -96,9 +96,9 @@ class PropertiesAdmin(admin.ModelAdmin):
 
 
 class PropertiesProductsAdmin(admin.ModelAdmin):
-    list_display = ('product', 'properties', 'properties_value')
-    list_display_link = ('product', 'properties', 'properties_value')
-    search_fields = ('product', 'properties', 'properties_value')
+    list_display = ('id', 'product', 'properties', 'properties_value')
+    list_display_link = ('id','product', 'properties', 'properties_value')
+    search_fields = ('id', 'product', 'properties', 'properties_value')
 
 
 class OrdersAdmin(admin.ModelAdmin):

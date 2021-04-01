@@ -18,3 +18,15 @@
 <div>{{ product.unit }}</div>
 <div>{{ product.sub_category }}</div>
 
+{% for propertie in properties %}
+<div>
+	<span>{{ propertie.properties }}</span>
+	<span>{{ propertie.properties_value }}</span>
+</div>
+{% endfor%} 
+
+<div>
+	<a href="{%url 'catalog'%}" >Верпнуться в каталог</a>
+</div>
+
+
